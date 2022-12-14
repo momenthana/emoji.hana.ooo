@@ -4,6 +4,7 @@ import { BlockPicker, ChromePicker } from "react-color";
 import { styled } from "@stitches/react";
 import { useCallback, useEffect, useState, MouseEventHandler } from "react";
 import Image from "next/image";
+import html2canvas from "html2canvas";
 
 const DropZone = styled("div", {
   width: 512,
@@ -11,7 +12,6 @@ const DropZone = styled("div", {
   display: "flex",
   position: "relative",
   justifyContent: "center",
-  borderRadius: "2rem",
   background: "LightGray",
   color: "White",
   overflow: "hidden",
@@ -27,6 +27,11 @@ const ColorPicker = styled("div", {
   display: "flex",
   margin: "1rem 0",
   gap: "1rem",
+});
+
+const BorderRadius = styled("div", {
+  overflow: "hidden",
+  borderRadius: "2rem",
 });
 
 const Home = () => {
@@ -60,7 +65,18 @@ const Home = () => {
     });
   }, []);
 
-  const clickHandler: MouseEventHandler = useCallback((e) => {}, []);
+  const clickHandler: MouseEventHandler = useCallback((e) => {
+    const element = document.getElementById("capture");
+
+    if (!element) return;
+
+    html2canvas(element).then((canvas) => {
+      const link = document.createElement("a");
+      link.download = "profile.png";
+      link.href = canvas.toDataURL();
+      link.click();
+    });
+  }, []);
 
   useEffect(() => {
     setLoading(false);
@@ -102,33 +118,33 @@ const Home = () => {
         />
 
         <div>
-          <DropZone css={{ background: imgSrc && "White" }}>
-            {imgSrc && <Image src={imgSrc} alt="" fill unoptimized />}
+          <BorderRadius>
+            <DropZone id="capture" css={{ background: imgSrc && "White" }}>
+              {imgSrc && <Image src={imgSrc} alt="" fill unoptimized />}
 
-            {!imgSrc && (
-              <Layout>
-                <p>
-                  Drag image to this drop zone
-                </p>
-              </Layout>
-            )}
+              {!imgSrc && (
+                <Layout>
+                  <p>Drag image to this drop zone</p>
+                </Layout>
+              )}
 
-            {text && (
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  fontSize: `${size}rem`,
-                  padding: "1rem 2rem",
-                  background: `${color}`,
-                  borderTopRightRadius: "2rem",
-                }}
-              >
-                {text}
-              </div>
-            )}
-          </DropZone>
+              {text && (
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    fontSize: `${size}rem`,
+                    padding: "1rem 2rem",
+                    background: `${color}`,
+                    borderTopRightRadius: "2rem",
+                  }}
+                >
+                  {text}
+                </div>
+              )}
+            </DropZone>
+          </BorderRadius>
 
           {!loading && (
             <ColorPicker>
