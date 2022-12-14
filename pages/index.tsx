@@ -1,5 +1,4 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
 import { BlockPicker, ChromePicker } from "react-color";
 import { styled } from "@stitches/react";
 import { useCallback, useEffect, useState, MouseEventHandler } from "react";
@@ -32,6 +31,49 @@ const ColorPicker = styled("div", {
 const BorderRadius = styled("div", {
   overflow: "hidden",
   borderRadius: "2rem",
+});
+
+const Banner = styled("div", {
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  padding: "1rem 2rem",
+  borderTopRightRadius: "2rem",
+});
+
+const Container = styled("div", {
+  padding: "0 2rem",
+});
+
+const Description = styled("div", {
+  margin: "4rem 0",
+  lineHeight: 1.5,
+  fontSize: "1.5rem",
+});
+
+const Main = styled("main", {
+  minHeight: "100vh",
+  padding: "4rem 0",
+  flex: 1,
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "center",
+  alignItems: "center",
+});
+
+const Footer = styled("div", {
+  display: "flex",
+  flex: 1,
+  padding: "2rem 0",
+  borderTop: "1px solid #eaeaea",
+  justifyContent: "center",
+  alignItems: "center",
+  "& a": {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    flexGrow: 1,
+  },
 });
 
 const Home = () => {
@@ -94,15 +136,15 @@ const Home = () => {
   }, [dropHandler]);
 
   return (
-    <div className={styles.container}>
+    <Container>
       <Head>
         <title>Emoji Generator</title>
         <meta name="description" content="Emoji Generator" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className={styles.main}>
-        <p className={styles.description}>Get started by editing image</p>
+      <Main>
+        <Description>Get started by editing image</Description>
 
         <input
           defaultValue={text}
@@ -129,19 +171,14 @@ const Home = () => {
               )}
 
               {text && (
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
+                <Banner
+                  css={{
                     fontSize: `${size}rem`,
-                    padding: "1rem 2rem",
                     background: `${color}`,
-                    borderTopRightRadius: "2rem",
                   }}
                 >
-                  {text}
-                </div>
+                  <b>{text}</b>
+                </Banner>
               )}
             </DropZone>
           </BorderRadius>
@@ -171,9 +208,9 @@ const Home = () => {
         </div>
 
         <button onClick={clickHandler}>Download</button>
-      </main>
+      </Main>
 
-      <footer className={styles.footer}>
+      <Footer>
         <a
           href="https://github.com/momenthana"
           target="_blank"
@@ -181,8 +218,8 @@ const Home = () => {
         >
           by Hana
         </a>
-      </footer>
-    </div>
+      </Footer>
+    </Container>
   );
 };
 
