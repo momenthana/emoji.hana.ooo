@@ -78,7 +78,7 @@ export const Index = (props: IProps) => {
 
   useEffect(() => {
     Router.replace({ query: { color, text, size } }, undefined, {
-      scroll: false,
+      shallow: true,
     });
   }, [color, text, size]);
 
