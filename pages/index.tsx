@@ -3,14 +3,15 @@ import {
   InferGetServerSidePropsType,
   NextPage,
 } from "next";
+import Head from "next/head";
 import { Index } from "../components/templates/Index";
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
+export const getServerSideProps = async ({
+  query,
+}: GetServerSidePropsContext) => {
   return {
     props: {
-      query: context.query,
+      query: query,
     },
   };
 };
@@ -18,14 +19,29 @@ export const getServerSideProps = async (
 const Home: NextPage<InferGetServerSidePropsType<typeof getServerSideProps>> = (
   props
 ) => {
-  const { color, text, size } = props.query;
+  const { text, size, color } = props.query;
+
+  if (Array.isArray(text)) throw new Error("Expected a single text");
+  if (Array.isArray(size)) throw new Error("Expected a single size");
+  if (Array.isArray(color)) throw new Error("Expected a single color");
+
+  const queryString = Object.entries(props.query)
+    .map((query) => encodeURIComponent(query.join("=")))
+    .join("&");
 
   return (
-    <Index
-      color={color ? String(color) : undefined}
-      text={text ? String(text) : undefined}
-      size={size ? Number(size) : undefined}
-    />
+    <>
+      <Head>
+        {queryString && (
+          <meta
+            property="og:image"
+            content={`/api?${queryString}`}
+          />
+        )}
+      </Head>
+
+      <Index text={text} size={size ? Number(size) : undefined} color={color} />
+    </>
   );
 };
 
