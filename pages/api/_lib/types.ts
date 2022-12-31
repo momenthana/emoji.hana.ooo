@@ -1,12 +1,12 @@
-export type FileType = 'png' | 'jpeg';
+export type FileType = "png" | "jpeg";
 
 export interface ParsedRequest {
-    fileType: FileType;
-    text: string;
-    color: string;
-    md: boolean;
-    fontSize: string;
-    images: string[];
-    widths: string[];
-    heights: string[];
+  fileType: FileType;
+  text: string;
+  color: string;
+  md: boolean;
+  fontSize: string;
+  images: string[];
+  widths: string[];
+  heights: string[];
 }
